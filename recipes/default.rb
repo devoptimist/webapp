@@ -32,14 +32,6 @@ powershell_script 'extract_elam' do
   creates 'C:\elam-cli-extracted'
 end
 
-powershell_script 'extract_movieapp' do
-  code <<-EOH
-  Add-Type -AssemblyName System.IO.Compression.FileSystem
-  [System.IO.Compression.ZipFile]::ExtractToDirectory('C:\\movieapp.zip', '#{node['iis']['docroot']}/publish')
-  EOH
-  creates "#{node['iis']['docroot']}/publish/MovieApp.csproj.use"
-end
-
 powershell_script 'install_iis' do
   code <<-EOH
   Import-Module Servermanager
@@ -51,9 +43,12 @@ iis_site 'Default Web Site' do
   action %i(stop delete)
 end
 
-remote_directory "#{node['iis']['docroot']}/publish" do
-  source 'publish'
-  action :create
+powershell_script 'extract_movieapp' do
+  code <<-EOH
+  Add-Type -AssemblyName System.IO.Compression.FileSystem
+  [System.IO.Compression.ZipFile]::ExtractToDirectory('C:\\movieapp.zip', '#{node['iis']['docroot']}/')
+  EOH
+  creates "#{node['iis']['docroot']}/publish/MovieApp.csproj.use"
 end
 
 iis_pool 'movieapp.com_apppool' do
