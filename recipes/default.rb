@@ -19,8 +19,8 @@
 
 powershell_script 'install_iis' do
   code <<-EOH
-  Import-Module Servermanager
-  Add-WindowsFeature Web-Server,Web-Asp-Net
+  & Import-Module Servermanager >> C:\\help.log
+  & Add-WindowsFeature Web-Server,Web-Asp-Net >> C:\\help.log
   EOH
 end
 
