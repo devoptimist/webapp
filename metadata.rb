@@ -4,7 +4,7 @@ maintainer_email 'sbrown@chef.io'
 license 'Apache-2.0'
 description 'Installs/Configures webapp'
 long_description 'Installs/Configures webapp'
-version '0.1.0'
+version '0.1.4'
 chef_version '>= 13.6.4'
 
 %w(windows).each do |os|
